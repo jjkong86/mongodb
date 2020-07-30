@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'org.springframework.boot' version '2.1.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
 }
@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -29,8 +29,6 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile('org.springframework.boot:spring-boot-devtools')
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
-
-    testImplementation 'io.projectreactor:reactor-test'
 
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
     compile("io.springfox:springfox-swagger2:2.9.2") {
