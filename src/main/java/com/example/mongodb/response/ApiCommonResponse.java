@@ -10,7 +10,6 @@ public class ApiCommonResponse {
 	int code = Constant.CODE_SUCCESS.getCode();
 	String error;
 
-	@Builder
 	public ApiCommonResponse(int code, String error) {
 		this.code = code;
 		this.error = error;

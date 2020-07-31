@@ -1,15 +1,29 @@
 package com.example.mongodb.controller;
 
+import com.example.mongodb.model.User;
+import com.example.mongodb.response.ApiCommonResponse;
+import com.example.mongodb.response.UserResponse;
+import com.example.mongodb.service.MongoDBService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@AllArgsConstructor
 public class MongoDBController {
-	@GetMapping(value = "/")
-	public String test() {
-		return "hello world!!";
+
+	MongoDBService mongoDBService;
+
+	public MongoDBController(MongoDBService mongoDBService) {
+		this.mongoDBService = mongoDBService;
+	}
+
+	@PostMapping(value = "/users")
+	public ApiCommonResponse saveUser(@RequestBody User user) {
+		return mongoDBService.saveUser(user);
+	}
+
+	@GetMapping(value = "/users/{userId}")
+	public UserResponse getUser(@PathVariable Long userId) {
+		return mongoDBService.getByUserId(userId);
 	}
 }
