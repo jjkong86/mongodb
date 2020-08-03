@@ -7,10 +7,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest()
+@SpringBootTest
+@Rollback
 public class MongoDBTest {
     @Autowired
     private UserRepository userRepository;
@@ -26,6 +28,7 @@ public class MongoDBTest {
 
         //then
         Assert.assertEquals(user.getUserId(), dbUserData.getUserId());
+        Assert.assertEquals(user.getName(), dbUserData.getName());
     }
 
 

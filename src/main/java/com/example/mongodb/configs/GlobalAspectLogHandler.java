@@ -1,4 +1,4 @@
-package com.example.mongodb.handler;
+package com.example.mongodb.configs;
 
 import com.example.mongodb.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.joining;
 @Component
 @Aspect
 @Slf4j
-public class GlobalAspectHandler {
+public class GlobalAspectLogHandler {
     @Around("within(com.example.mongodb.controller.*)")
     public Object logBefore(ProceedingJoinPoint point) throws Throwable {
         Object resultVal = point.proceed();
