@@ -20,7 +20,9 @@ public class MongoDBTest {
     @Test
     public void 유저_컬렉션_데이터_삽입() {
         //given
-        User user = User.builder().userId(100000L).name("정재공").phoneNumber("010492399").build();
+        long userId = 100000L;
+        userRepository.deleteByUserId(userId);
+        User user = User.builder().userId(userId).name("정재공").phoneNumber("010492399").build();
         userRepository.insert(user);
 
         //when
