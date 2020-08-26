@@ -24,6 +24,11 @@ public class MongoDBController {
 
 	@GetMapping(value = "/users/{userId}")
 	public UserResponse getUser(@PathVariable Long userId) {
-		return mongoDBService.getByUserId(userId);
+		return mongoDBService.getByCollectionKey(userId);
+	}
+
+	@GetMapping(value = "/rollback/{userId}")
+	public ApiCommonResponse rollbackTest(@PathVariable Long userId, boolean isRollback) {
+		return mongoDBService.rollbackTest(userId, isRollback);
 	}
 }
