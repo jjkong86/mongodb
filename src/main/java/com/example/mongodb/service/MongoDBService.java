@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class MongoDBService {
@@ -21,10 +23,19 @@ public class MongoDBService {
         this.userRepository = userRepository;
     }
 
-    public ApiCommonResponse saveUser(User user) {
-        userRepository.save(user);
+    public UserResponse saveUser(User user) {
+        User userData = Optional.ofNullable(this.saveUserHandling(user))
+                .orElseThrow(() -> new ValidCustomException(201, "duplicate key error collection"));
 
-        return new ApiCommonResponse();
+        return UserResponse.builder().user(userData).code(Constant.CODE_SUCCESS.getCode()).build();
+    }
+
+    public User saveUserHandling(User user) {
+        try {
+            return userRepository.save(user);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     public UserResponse getByUserId(Long userId) {
@@ -36,7 +47,19 @@ public class MongoDBService {
     }
 
     public <T extends CommonModel<? extends Number>> UserResponse getByCollectionKey(T model) {
-        return UserResponse.builder().user(userRepository.findByUserId(model.getCollectionKeyValue().longValue())).code(Constant.CODE_SUCCESS.getCode()).build();
+        User user = Optional.ofNullable(userRepository.findByUserId(model.getCollectionKeyValue().longValue()))
+                .orElseThrow(() -> new ValidCustomException(202, "not found user data by userId."));
+
+        return UserResponse.builder().user(user).code(Constant.CODE_SUCCESS.getCode()).build();
+    }
+
+    public UserResponse updateUserByCollectionKey(User user) {
+        User userData = Optional.ofNullable(userRepository.findByUserId(user.getUserId()))
+                .orElseThrow(() -> new ValidCustomException(500, "not found user data by user id."));
+
+        user.setValueById(userData.getId()); // set user id
+
+        return UserResponse.builder().user(userRepository.save(user)).code(Constant.CODE_SUCCESS.getCode()).build();
     }
 
     @Transactional

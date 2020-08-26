@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,7 +21,7 @@ public class MongoDBTest {
         long userId = 100000L;
         userRepository.deleteByUserId(userId);
         User user = User.builder().userId(userId).name("정재공").phoneNumber("010492399").build();
-        userRepository.insert(user);
+        userRepository.save(user);
 
         //when
         User dbUserData = userRepository.findByUserId(user.getUserId());

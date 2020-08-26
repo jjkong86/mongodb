@@ -27,6 +27,11 @@ public class MongoDBController {
 		return mongoDBService.getByCollectionKey(userId);
 	}
 
+	@PutMapping(value = "/users/")
+	public UserResponse updateUser(@RequestBody User user) {
+		return mongoDBService.updateUserByCollectionKey(user);
+	}
+
 	@GetMapping(value = "/rollback/{userId}")
 	public ApiCommonResponse rollbackTest(@PathVariable Long userId, boolean isRollback) {
 		return mongoDBService.rollbackTest(userId, isRollback);
