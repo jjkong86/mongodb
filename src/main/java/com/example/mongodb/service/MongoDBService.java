@@ -6,6 +6,7 @@ import com.example.mongodb.model.CommonModel;
 import com.example.mongodb.model.User;
 import com.example.mongodb.repository.UserRepository;
 import com.example.mongodb.response.ApiCommonResponse;
+import com.example.mongodb.response.UserListResponse;
 import com.example.mongodb.response.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,8 @@ public class MongoDBService {
         }
     }
 
-    public UserResponse getByUserId(Long userId) {
-        return UserResponse.builder().user(userRepository.findByUserId(userId)).code(Constant.CODE_SUCCESS.getCode()).build();
+    public UserListResponse findUserList() {
+        return UserListResponse.builder().users(userRepository.findAll()).build();
     }
 
     public <T extends Number> UserResponse getByCollectionKey(T userId) {
@@ -66,7 +67,7 @@ public class MongoDBService {
     public <T extends Number> ApiCommonResponse rollbackTest(T userId, boolean isRollback) {
         userRepository.deleteByUserId(userId.longValue());
         User user = User.builder().userId(userId.longValue()).name("정재공").phoneNumber("010492399").build();
-        userRepository.insert(user);
+        userRepository.save(user);
 
         if (isRollback) {
             throw new ValidCustomException(500, "data rollback");
