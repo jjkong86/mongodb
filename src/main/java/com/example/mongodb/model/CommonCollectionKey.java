@@ -7,17 +7,7 @@ import java.lang.reflect.Field;
 
 public interface CommonCollectionKey<T> {
 
-    @JsonIgnore
-    default String getCollectionKey() {
-        Field[] fields = this.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(CollectionKey.class)) { // @CollectionKey 있는지 체크
-                return field.getName();
-            }
-        }
-        return "";
-    }
-
+    @SuppressWarnings("unchecked")
     @JsonIgnore
     default T getCollectionKeyValue() {
         Field[] fields = this.getClass().getDeclaredFields();
@@ -32,6 +22,17 @@ public interface CommonCollectionKey<T> {
             }
         }
         return null;
+    }
+
+    @JsonIgnore
+    default String getCollectionKey() {
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(CollectionKey.class)) { // @CollectionKey 있는지 체크
+                return field.getName();
+            }
+        }
+        return "";
     }
 
     @JsonIgnore
