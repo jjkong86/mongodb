@@ -31,7 +31,7 @@ public class SwaggerConfig {
 				.globalResponseMessage(RequestMethod.GET,
 					Arrays.asList(
 							new ResponseMessageBuilder().code(500).message("Internal Server Error")
-									.responseModel(new ModelRef("Error")).build(),
+									.responseModel(new ModelRef("error")).build(),
 							new ResponseMessageBuilder().code(400).message("Bad Request").build(),
 							new ResponseMessageBuilder().code(404).message("Not Found").build()));
 	}
