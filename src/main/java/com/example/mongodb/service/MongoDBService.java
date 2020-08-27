@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Slf4j
 public class MongoDBService {
@@ -25,17 +23,15 @@ public class MongoDBService {
     }
 
     public UserResponse saveUser(User user) {
-        User userData = Optional.ofNullable(this.saveUserHandling(user))
-                .orElseThrow(() -> new ValidCustomException(201, "duplicate key error collection"));
-
+        User userData = this.saveUserHandling(user);
         return UserResponse.builder().user(userData).code(Constant.CODE_SUCCESS.getCode()).build();
     }
 
     public User saveUserHandling(User user) {
         try {
-            return userRepository.save(user);
+            return userRepository.save(user); // with out _class field
         } catch (RuntimeException e) {
-            return null;
+            throw new ValidCustomException(201, "duplicate key error collection.");
         }
     }
 
@@ -48,16 +44,13 @@ public class MongoDBService {
     }
 
     public <T extends CommonModel<? extends Number>> UserResponse getByCollectionKey(T model) {
-        User user = Optional.ofNullable(userRepository.findByUserId(model.getCollectionKeyValue().longValue()))
-                .orElseThrow(() -> new ValidCustomException(202, "not found user data by userId."));
-
+        User user = this.findByUserId(model.getCollectionKeyValue().longValue());
         return UserResponse.builder().user(user).code(Constant.CODE_SUCCESS.getCode()).build();
     }
 
     public UserResponse updateUserByCollectionKey(User user) {
-        User userData = Optional.ofNullable(userRepository.findByUserId(user.getUserId()))
-                .orElseThrow(() -> new ValidCustomException(500, "not found user data by user id."));
-
+        // optional
+        User userData = this.findByUserId(user.getUserId());
         user.setValueById(userData.getId()); // set user id
 
         return UserResponse.builder().user(userRepository.save(user)).code(Constant.CODE_SUCCESS.getCode()).build();
@@ -74,9 +67,14 @@ public class MongoDBService {
         }
 
         //when
-        User dbUserData = userRepository.findByUserId(user.getUserId());
+        User dbUserData = this.findByUserId(user.getUserId());
         log.info("insert data info : {}", user.toString());
         log.info("db from user data info : {}", dbUserData.toString());
         return new ApiCommonResponse();
+    }
+
+    public <T extends Number> User findByUserId(T id) {
+        return userRepository.findByUserId(id.longValue())
+                .orElseThrow(() -> new ValidCustomException(500, "not found user data by userId."));
     }
 }

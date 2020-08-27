@@ -19,9 +19,7 @@ public abstract class CommonModel<T> implements CommonCollectionKey<T> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public long createTime;
 
-
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public long updateTime;
-
 }

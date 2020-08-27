@@ -32,7 +32,7 @@ public class MongoDBController {
         return mongoDBService.getByCollectionKey(userId);
     }
 
-    @PutMapping(value = "/users/")
+    @PutMapping(value = "/users")
     public UserResponse updateUser(@RequestBody User user) {
         return mongoDBService.updateUserByCollectionKey(user);
     }

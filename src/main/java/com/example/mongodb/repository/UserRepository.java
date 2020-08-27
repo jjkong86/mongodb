@@ -4,9 +4,10 @@ import com.example.mongodb.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends MongoRepository<User, Long> {
-    User findByUserId(Long userId);
+    Optional<User> findByUserId(Long userId);
     void deleteByUserId(Long useId);
     List<User> findAll();
 }
