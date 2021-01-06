@@ -4,10 +4,14 @@ import com.example.mongodb.constant.Constant;
 import com.example.mongodb.exception.ValidCustomException;
 import com.example.mongodb.model.CommonModel;
 import com.example.mongodb.model.User;
+import com.example.mongodb.model.UserLog;
+import com.example.mongodb.repository.UserLogRepository;
 import com.example.mongodb.repository.UserRepository;
 import com.example.mongodb.response.ApiCommonResponse;
 import com.example.mongodb.response.UserListResponse;
+import com.example.mongodb.response.UserLogResponse;
 import com.example.mongodb.response.UserResponse;
+import com.example.mongodb.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class MongoDBService {
 
     UserRepository userRepository;
+    UserLogRepository userLogRepository;
 
-    public MongoDBService(UserRepository userRepository) {
+    public MongoDBService(UserRepository userRepository, UserLogRepository userLogRepository) {
         this.userRepository = userRepository;
+        this.userLogRepository = userLogRepository;
     }
 
     public UserResponse saveUser(User user) {
@@ -44,13 +50,13 @@ public class MongoDBService {
     }
 
     public <T extends CommonModel<? extends Number>> UserResponse getByCollectionKey(T model) {
-        User user = this.findByUserId(model.getCollectionKeyValue().longValue());
+        User user = this.findUserByUserId(model.getCollectionKeyValue().longValue());
         return UserResponse.builder().user(user).code(Constant.CODE_SUCCESS.getCode()).build();
     }
 
     public UserResponse updateUserByCollectionKey(User user) {
         // optional
-        User userData = this.findByUserId(user.getUserId());
+        User userData = this.findUserByUserId(user.getUserId());
         user.setValueById(userData.getId()); // set user id
 
         return UserResponse.builder().user(userRepository.save(user)).code(Constant.CODE_SUCCESS.getCode()).build();
@@ -67,14 +73,20 @@ public class MongoDBService {
         }
 
         //when
-        User dbUserData = this.findByUserId(user.getUserId());
+        User dbUserData = this.findUserByUserId(user.getUserId());
         log.info("insert data info : {}", user.toString());
         log.info("db from user data info : {}", dbUserData.toString());
         return new ApiCommonResponse();
     }
 
-    public <T extends Number> User findByUserId(T id) {
+    public <T extends Number> User findUserByUserId(T id) {
         return userRepository.findByUserId(id.longValue())
                 .orElseThrow(() -> new ValidCustomException(500, "not found user data by userId."));
+    }
+
+    public ApiCommonResponse saveTtlIndex(Long userId) {
+        UserLog log = new UserLog(this.findUserByUserId(userId), DateUtil.get1MinuteTime());
+        userLogRepository.save(log);
+        return UserLogResponse.builder().userLog(log).build();
     }
 }

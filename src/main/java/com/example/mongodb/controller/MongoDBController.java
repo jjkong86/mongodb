@@ -41,4 +41,9 @@ public class MongoDBController {
     public ApiCommonResponse rollbackTest(@PathVariable Long userId, boolean isRollback) {
         return mongoDBService.rollbackTest(userId, isRollback);
     }
+
+    @GetMapping(value = "/ttlIndex/{userId}")
+    public ApiCommonResponse saveTtlIndex(@PathVariable Long userId) {
+        return mongoDBService.saveTtlIndex(userId);
+    }
 }
