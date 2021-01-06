@@ -15,7 +15,7 @@ public class User extends CommonModel<Long> {
     private String phoneNumber;
 
     User() {
-        super.createTime = System.currentTimeMillis();
+        super.setCreateTime(System.currentTimeMillis());
     }
 
     @Builder
@@ -23,5 +23,13 @@ public class User extends CommonModel<Long> {
         this.userId = userId;
         this.name = name;
         this.phoneNumber = phoneNumber;
+    }
+
+    public User(User user) {
+        super.setCreateTime(user.getCreateTime());
+        super.setUpdateTime(user.getUpdateTime());
+        this.userId = user.getUserId();
+        this.name = user.getName();
+        this.phoneNumber = user.getPhoneNumber();
     }
 }
