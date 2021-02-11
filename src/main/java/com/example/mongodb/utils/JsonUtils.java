@@ -10,7 +10,7 @@ public class JsonUtils {
 
     public static String toJson(Object target) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(target);
+            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(target);
         } catch (IOException e) {
             throw new JsonParseException(target.toString(), e);
         }

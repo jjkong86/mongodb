@@ -1,4 +1,4 @@
-package com.example.mongodb.controller;
+package com.example.mongodb;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

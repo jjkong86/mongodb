@@ -1,6 +1,7 @@
-package com.example.mongodb.response;
+package com.example.mongodb.domain.user.response;
 
-import com.example.mongodb.model.User;
+import com.example.mongodb.domain.user.model.User;
+import com.example.mongodb.response.ApiCommonResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

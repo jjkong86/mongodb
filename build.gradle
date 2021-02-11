@@ -18,10 +18,14 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
 
