@@ -1,8 +1,8 @@
 package com.example.mongodb;
 
+import com.example.mongodb.domain.user.model.User;
+import com.example.mongodb.domain.user.repository.UserRepository;
 import com.example.mongodb.exception.ValidCustomException;
-import com.example.mongodb.model.User;
-import com.example.mongodb.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,12 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MongoDBTest {
-
+    @Autowired
     private UserRepository userRepository;
-
-    public MongoDBTest(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Test
     public void 유저_컬렉션_데이터_삽입() {
