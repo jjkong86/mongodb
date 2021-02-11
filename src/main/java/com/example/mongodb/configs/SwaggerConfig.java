@@ -22,7 +22,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.mongodb.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.mongodb"))
                 .paths(PathSelectors.any())
                 .build().apiInfo(apiInfo())
                 .globalResponseMessage(RequestMethod.GET,

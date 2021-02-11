@@ -1,5 +1,6 @@
-package com.example.mongodb.model;
+package com.example.mongodb.domain.user.model;
 
+import com.example.mongodb.domain.user.model.User;
 import com.example.mongodb.utils.DateUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

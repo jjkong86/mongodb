@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.joining;
 @Aspect
 @Slf4j
 public class GlobalAspectLogHandler {
-    @Around("within(com.example.mongodb.controller.*)")
+    @Around("within(com.example.mongodb.domain.*.*)")
     public Object logBefore(ProceedingJoinPoint point) throws Throwable {
         Object resultVal = point.proceed();
 

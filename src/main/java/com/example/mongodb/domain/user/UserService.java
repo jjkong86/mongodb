@@ -1,31 +1,37 @@
-package com.example.mongodb.service;
+package com.example.mongodb.domain.user;
 
 import com.example.mongodb.constant.Constant;
 import com.example.mongodb.exception.ValidCustomException;
 import com.example.mongodb.model.CommonModel;
-import com.example.mongodb.model.User;
-import com.example.mongodb.model.UserLog;
-import com.example.mongodb.repository.UserLogRepository;
-import com.example.mongodb.repository.UserRepository;
+import com.example.mongodb.domain.user.model.User;
+import com.example.mongodb.domain.user.model.UserLog;
+import com.example.mongodb.domain.user.repository.UserLogRepository;
+import com.example.mongodb.domain.user.repository.UserRepository;
 import com.example.mongodb.response.ApiCommonResponse;
-import com.example.mongodb.response.UserListResponse;
-import com.example.mongodb.response.UserLogResponse;
-import com.example.mongodb.response.UserResponse;
+import com.example.mongodb.domain.user.response.UserListResponse;
+import com.example.mongodb.domain.user.response.UserLogResponse;
+import com.example.mongodb.domain.user.response.UserResponse;
 import com.example.mongodb.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class MongoDBService {
+public class UserService {
 
-    UserRepository userRepository;
-    UserLogRepository userLogRepository;
+    private final UserRepository userRepository;
+    private final UserLogRepository userLogRepository;
 
-    public MongoDBService(UserRepository userRepository, UserLogRepository userLogRepository) {
+    private final MongoTemplate mongoTemplate;
+
+
+    public UserService(UserRepository userRepository, UserLogRepository userLogRepository, MongoTemplate mongoTemplate) {
         this.userRepository = userRepository;
         this.userLogRepository = userLogRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     public UserResponse saveUser(User user) {
@@ -43,6 +49,10 @@ public class MongoDBService {
 
     public UserListResponse findUserList() {
         return UserListResponse.builder().users(userRepository.findAll()).build();
+    }
+
+    public UserListResponse findUserListWithTemplate() {
+        return UserListResponse.builder().users(mongoTemplate.find(new Query(), User.class, "User")).build();
     }
 
     public <T extends Number> UserResponse getByCollectionKey(T userId) {
