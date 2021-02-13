@@ -12,7 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@SpringBootTest
+@SpringBootTest(
+        properties = {"spring.config.location=classpath:application-dev.properties"}
+)
 @ExtendWith(SpringExtension.class)
 public abstract class ControllerTest {
 
@@ -21,7 +23,7 @@ public abstract class ControllerTest {
     abstract protected Object controller();
 
     @BeforeEach
-    private void setup() {
+    public void setup() {
         setMockMvc(MockMvcBuilders.standaloneSetup(controller())
                 .addFilter(new CharacterEncodingFilter(StandardCharsets.UTF_8.name(), true))
                 .alwaysDo(print())
