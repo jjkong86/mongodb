@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest(
-        properties = {"spring.config.location=classpath:application-dev.properties"}
+        properties = {"spring.config.location=classpath:application-test.properties"}
 )
 @ExtendWith(SpringExtension.class)
 public abstract class ControllerTest {

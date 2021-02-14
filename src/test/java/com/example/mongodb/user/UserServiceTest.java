@@ -1,25 +1,23 @@
-package com.example.mongodb;
+package com.example.mongodb.user;
 
+import com.example.mongodb.ServiceTest;
 import com.example.mongodb.domain.user.model.User;
 import com.example.mongodb.domain.user.repository.UserRepository;
 import com.example.mongodb.exception.ValidCustomException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class MongoDBTest {
+public class UserServiceTest extends ServiceTest {
     @Autowired
     private UserRepository userRepository;
 
     @Test
+    @Transactional
     public void 유저_컬렉션_데이터_삽입() {
         //given
-        long userId = 100000L;
+        long userId = 133L;
         userRepository.deleteByUserId(userId);
         User user = User.builder().userId(userId).name("정재공").phoneNumber("010492399").build();
         userRepository.save(user);
