@@ -13,7 +13,6 @@ public class IgniteClientConnectionTest {
     }
 
     public static void igniteClientTest() {
-//        ClientConfiguration cfg = new ClientConfiguration().setAddresses("10.101.39.183:48100");
         ClientConfiguration cfg = new ClientConfiguration().setAddresses("127.0.0.1:48100");
         try (IgniteClient igniteClient = Ignition.startClient(cfg)) {
             System.out.println();
