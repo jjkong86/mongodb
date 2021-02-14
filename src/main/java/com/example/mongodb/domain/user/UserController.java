@@ -48,6 +48,6 @@ public class UserController {
 
     @GetMapping(value = "/ttlIndex/{userId}")
     public ApiCommonResponse saveTtlIndex(@PathVariable Long userId) {
-        return userService.saveTtlIndex(userId);
+        return userService.saveUserLogWithTtlIndex(userId);
     }
 }

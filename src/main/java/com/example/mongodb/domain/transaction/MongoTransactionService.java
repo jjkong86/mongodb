@@ -1,47 +1,53 @@
 package com.example.mongodb.domain.transaction;
 
+import com.example.mongodb.domain.user.UserService;
 import com.example.mongodb.domain.user.model.User;
-import com.example.mongodb.domain.user.response.UserListResponse;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.data.mongodb.MongoTransactionManager;
-import org.springframework.data.mongodb.SessionSynchronization;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import com.example.mongodb.domain.user.response.UserResponse;
+import com.example.mongodb.exception.ValidCustomException;
+import com.example.mongodb.utils.TransactionTemplateWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import java.util.List;
 
 @Service
+@Slf4j
 public class MongoTransactionService {
-    private final MongoTransactionManager mongoTransactionManager;
-    private final MongoTemplate mongoTemplate;
+    private final TransactionTemplateWrapper transactionTemplateWrapper;
 
-    public MongoTransactionService(MongoTransactionManager mongoTransactionManager, MongoTemplate mongoTemplate) {
-        this.mongoTransactionManager = mongoTransactionManager;
-        this.mongoTemplate = mongoTemplate;
+    private final UserService userService;
+
+    public MongoTransactionService(TransactionTemplateWrapper transactionTemplateWrapper, UserService userService) {
+        this.transactionTemplateWrapper = transactionTemplateWrapper;
+        this.userService = userService;
     }
 
-    public UserListResponse getUsersWithTransaction() {
-        mongoTemplate.setSessionSynchronization(SessionSynchronization.ALWAYS);
-
-        TransactionTemplate transactionTemplate = new TransactionTemplate(mongoTransactionManager);
-        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(@NotNull TransactionStatus status) {
-                mongoTemplate.insert(new User(123L, "Kim", "20"));
-                mongoTemplate.insert(new User(1234L, "Jack", "45"));
-            }
+    public UserResponse saveUserWithTransaction(User user) {
+        transactionTemplateWrapper.execute(() -> {
+            userService.saveUserHandling(user);
+            userService.saveUserLogWithTtlIndex(user);
         });
 
-        Query query = new Query().addCriteria(Criteria.where("name").is("Jack"));
-        List<User> users = mongoTemplate.find(new Query(), User.class);
-        System.out.println(users.size());
+        return UserResponse.builder().user(user).build();
+    }
 
-        return UserListResponse.builder().users(users).build();
+    public UserResponse rollBackTest(User user, boolean isRollBack) {
+        try {
+            transactionTemplateWrapper.execute(() -> {
+                userService.saveUserHandling(user);
+                userService.saveUserLogWithTtlIndex(user);
+                if (isRollBack)
+                    throw new ValidCustomException(500, "data rollback");
+            });
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            if (!isRollBack) // 의도적인 오류가 아님
+                throw new ValidCustomException(e.getMessage());
+        }
+
+        // rollback 성공이면 exception 발생함
+        userService.findUserByUserId(user.getUserId());
+
+        return UserResponse.builder().user(user).build();
     }
 
 }

@@ -18,7 +18,7 @@ public class User extends CommonModel<Long> {
     private String name;
     private String phoneNumber;
 
-    User() {
+    public User() {
         super.setCreateTime(System.currentTimeMillis());
     }
 

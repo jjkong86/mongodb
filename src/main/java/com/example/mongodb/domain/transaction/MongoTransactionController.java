@@ -1,7 +1,9 @@
 package com.example.mongodb.domain.transaction;
 
-import com.example.mongodb.domain.user.response.UserListResponse;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.example.mongodb.domain.user.model.User;
+import com.example.mongodb.domain.user.response.UserResponse;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,8 +17,13 @@ public class MongoTransactionController {
         this.mongoTransactionService = mongoTransactionService;
     }
 
-    @GetMapping("/users")
-    public UserListResponse getUsers() {
-        return mongoTransactionService.getUsersWithTransaction();
+    @PostMapping("/users")
+    public UserResponse getUsers(@RequestBody User user) {
+        return mongoTransactionService.saveUserWithTransaction(user);
+    }
+
+    @PostMapping("/rollback")
+    public UserResponse getUsers(@RequestBody User user, boolean isRollBack) {
+        return mongoTransactionService.rollBackTest(user, isRollBack);
     }
 }

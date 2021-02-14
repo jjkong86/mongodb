@@ -1,16 +1,16 @@
 package com.example.mongodb.domain.user;
 
 import com.example.mongodb.constant.Constant;
-import com.example.mongodb.exception.ValidCustomException;
-import com.example.mongodb.model.CommonModel;
 import com.example.mongodb.domain.user.model.User;
 import com.example.mongodb.domain.user.model.UserLog;
 import com.example.mongodb.domain.user.repository.UserLogRepository;
 import com.example.mongodb.domain.user.repository.UserRepository;
-import com.example.mongodb.response.ApiCommonResponse;
 import com.example.mongodb.domain.user.response.UserListResponse;
 import com.example.mongodb.domain.user.response.UserLogResponse;
 import com.example.mongodb.domain.user.response.UserResponse;
+import com.example.mongodb.exception.ValidCustomException;
+import com.example.mongodb.model.CommonModel;
+import com.example.mongodb.response.ApiCommonResponse;
 import com.example.mongodb.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -94,9 +94,14 @@ public class UserService {
                 .orElseThrow(() -> new ValidCustomException(500, "not found user data by userId."));
     }
 
-    public ApiCommonResponse saveTtlIndex(Long userId) {
+    public ApiCommonResponse saveUserLogWithTtlIndex(Long userId) {
         UserLog log = new UserLog(this.findUserByUserId(userId), DateUtil.get1MinuteTime());
         userLogRepository.save(log);
         return UserLogResponse.builder().userLog(log).build();
+    }
+
+    public void saveUserLogWithTtlIndex(User user) {
+        UserLog log = new UserLog(user, DateUtil.get1MinuteTime());
+        userLogRepository.save(log);
     }
 }
