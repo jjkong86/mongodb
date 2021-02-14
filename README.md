@@ -8,3 +8,4 @@ swagger url : http://localhost:8080/swagger-ui.html
  3. ControllerAdvice(AOP) 활용하여 Exception 공통 처리
  4. Reflection + Annotation 조합하여 Common Method
  5. MongoDB TTL INDEX 적용(User Log)
+ 6. MongoDB Transaction Template 적용
