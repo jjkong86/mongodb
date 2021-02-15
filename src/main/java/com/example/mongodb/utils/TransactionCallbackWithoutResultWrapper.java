@@ -9,7 +9,11 @@ public class TransactionCallbackWithoutResultWrapper {
         return new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(@NotNull TransactionStatus status) {
-                callback.action();
+                try {
+                    callback.action();
+                } catch (Exception e) {
+                    status.isRollbackOnly();
+                }
             }
         };
     }
