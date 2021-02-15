@@ -4,24 +4,24 @@ import com.example.mongodb.domain.user.UserService;
 import com.example.mongodb.domain.user.model.User;
 import com.example.mongodb.domain.user.response.UserResponse;
 import com.example.mongodb.exception.ValidCustomException;
-import com.example.mongodb.utils.TransactionTemplateWrapper;
+import com.example.mongodb.utils.TransactionTemplateFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class MongoTransactionService {
-    private final TransactionTemplateWrapper transactionTemplateWrapper;
+    private final TransactionTemplateFactory transactionTemplateFactory;
 
     private final UserService userService;
 
-    public MongoTransactionService(TransactionTemplateWrapper transactionTemplateWrapper, UserService userService) {
-        this.transactionTemplateWrapper = transactionTemplateWrapper;
+    public MongoTransactionService(TransactionTemplateFactory transactionTemplateFactory, UserService userService) {
+        this.transactionTemplateFactory = transactionTemplateFactory;
         this.userService = userService;
     }
 
     public UserResponse saveUserWithTransaction(User user) {
-        transactionTemplateWrapper.execute(() -> {
+        transactionTemplateFactory.execute(() -> {
             userService.saveUserHandling(user);
             userService.saveUserLogWithTtlIndex(user);
         });
@@ -31,7 +31,7 @@ public class MongoTransactionService {
 
     public UserResponse rollBackTest(User user, boolean isRollBack) {
         try {
-            transactionTemplateWrapper.execute(() -> {
+            transactionTemplateFactory.execute(() -> {
                 userService.saveUserHandling(user);
                 userService.saveUserLogWithTtlIndex(user);
                 if (isRollBack)
