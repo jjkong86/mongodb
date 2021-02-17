@@ -1,4 +1,4 @@
-package com.example.mongodb.configs;
+package com.example.mongodb.handler;
 
 import com.example.mongodb.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
