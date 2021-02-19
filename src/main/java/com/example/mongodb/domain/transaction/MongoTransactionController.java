@@ -23,7 +23,13 @@ public class MongoTransactionController {
     }
 
     @PostMapping("/rollback")
-    public UserResponse getUsers(@RequestBody User user, boolean isRollBack) {
+    public UserResponse rollbackTest(@RequestBody User user, boolean isRollBack) {
         return mongoTransactionService.rollBackTest(user, isRollBack);
     }
+
+    @PostMapping("/rollback/annotation")
+    public UserResponse annotationRollBackTest(@RequestBody User user) {
+        return mongoTransactionService.annotationRollBackTest(user);
+    }
+
 }

@@ -3,16 +3,14 @@ package ignite;
 
 import org.apache.ignite.Ignition;
 import org.apache.ignite.client.ClientCache;
-import org.apache.ignite.client.ClientException;
 import org.apache.ignite.client.IgniteClient;
 import org.apache.ignite.configuration.ClientConfiguration;
+import org.junit.Test;
 
 public class IgniteClientConnectionTest {
-    public static void main(String[] args) {
-        igniteClientTest();
-    }
 
-    public static void igniteClientTest() {
+    @Test
+    public void igniteClientTest() {
         ClientConfiguration cfg = new ClientConfiguration().setAddresses("127.0.0.1:48100");
         try (IgniteClient igniteClient = Ignition.startClient(cfg)) {
             System.out.println();
@@ -34,10 +32,8 @@ public class IgniteClientConnectionTest {
             String cachedVal = cache.get(key);
 
             System.out.format(">>> Loaded [%s] from the cache.\n", cachedVal);
-        } catch (ClientException e) {
-            System.err.println(e.getMessage());
         } catch (Exception e) {
-            System.err.format("Unexpected failure: %s\n", e);
+            e.printStackTrace();
         }
     }
 }
