@@ -28,8 +28,12 @@ public class MongoTransactionController {
     }
 
     @PostMapping("/rollback/annotation")
-    public UserResponse annotationRollBackTest(@RequestBody User user) {
-        return mongoTransactionService.annotationRollBackTest(user);
+    public UserResponse annotationRollBackTest(@RequestBody User user, boolean isRollBack) {
+        return mongoTransactionService.annotationRollBackTest(user, isRollBack);
+    }
+    @PostMapping("/rollback/annotation/requires/new")
+    public UserResponse annotationRollBackWithRequiresNew(@RequestBody User user, boolean isRollBack) {
+        return mongoTransactionService.rollBackWithRequiresNew(user, isRollBack);
     }
 
 }

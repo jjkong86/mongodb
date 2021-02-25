@@ -1,5 +1,6 @@
 package com.example.mongodb.handler;
 
+import com.example.mongodb.exception.ValidCustomException;
 import com.example.mongodb.utils.TemplateTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -53,14 +54,11 @@ public class TransactionalTemplateAspect {
         TransactionTemplate template = this.setTransactionalOption(templateTransactional);
 
         final Object[] result = {null};
-        template.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(@NotNull TransactionStatus status) {
-                try {
-                    result[0] = point.proceed();
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
+        new TransactionTemplateFactory(template).execute(() -> {
+            try {
+                result[0] = point.proceed();
+            } catch (Throwable throwable) {
+                throw new ValidCustomException(throwable.getMessage());
             }
         });
 

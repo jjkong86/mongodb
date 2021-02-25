@@ -4,7 +4,7 @@ import com.example.mongodb.ServiceTest;
 import com.example.mongodb.domain.user.UserService;
 import com.example.mongodb.domain.user.model.User;
 import com.example.mongodb.exception.ValidCustomException;
-import com.example.mongodb.utils.TransactionTemplateFactory;
+import com.example.mongodb.handler.TransactionTemplateFactoryBean;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 public class MongoTransactionTest extends ServiceTest {
     @Autowired
-    TransactionTemplateFactory transactionTemplateFactory;
+    TransactionTemplateFactoryBean transactionTemplateFactoryBean;
     @Autowired
     UserService userService;
     @Autowired
@@ -27,7 +27,7 @@ public class MongoTransactionTest extends ServiceTest {
 
         // when
         try {
-            transactionTemplateFactory.execute(() -> {
+            transactionTemplateFactoryBean.execute(() -> {
                 userService.saveUserHandling(user);
                 userService.saveUserLogWithTtlIndex(user);
 
