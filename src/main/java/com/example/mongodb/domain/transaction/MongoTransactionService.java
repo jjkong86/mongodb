@@ -7,7 +7,6 @@ import com.example.mongodb.exception.ValidCustomException;
 import com.example.mongodb.utils.TemplateTransactional;
 import com.example.mongodb.utils.TransactionTemplateFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -43,7 +42,6 @@ public class MongoTransactionService {
             });
 
         } catch (RuntimeException e) {
-            e.printStackTrace();
             if (!isRollBack) // 의도적인 오류가 아님
                 throw new ValidCustomException(e.getMessage());
         }
