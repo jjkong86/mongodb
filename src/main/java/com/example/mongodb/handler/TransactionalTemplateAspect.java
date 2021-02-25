@@ -58,15 +58,13 @@ public class TransactionalTemplateAspect {
             protected void doInTransactionWithoutResult(@NotNull TransactionStatus status) {
                 try {
                     result[0] = point.proceed();
-                } catch (Exception e) {
-                    status.isRollbackOnly();
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }
             }
         });
 
-        return result;
+        return result[0];
     }
 
     // annotation name, value 동적으로 가져오는 방법을 찾아보자

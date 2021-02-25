@@ -36,4 +36,8 @@ public class User extends CommonModel<Long> {
         this.name = user.getName();
         this.phoneNumber = user.getPhoneNumber();
     }
+
+    public User(long userId) {
+        this.userId = userId;
+    }
 }

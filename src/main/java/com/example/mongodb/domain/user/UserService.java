@@ -13,8 +13,6 @@ import com.example.mongodb.model.CommonModel;
 import com.example.mongodb.response.ApiCommonResponse;
 import com.example.mongodb.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +22,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserLogRepository userLogRepository;
+    private final UserTransactionService userTransactionService;
 
-    private final MongoTemplate mongoTemplate;
-
-
-    public UserService(UserRepository userRepository, UserLogRepository userLogRepository, MongoTemplate mongoTemplate) {
+    public UserService(UserRepository userRepository, UserLogRepository userLogRepository, UserTransactionService userTransactionService) {
         this.userRepository = userRepository;
         this.userLogRepository = userLogRepository;
-        this.mongoTemplate = mongoTemplate;
+        this.userTransactionService = userTransactionService;
     }
 
     public UserResponse saveUser(User user) {
@@ -49,10 +45,6 @@ public class UserService {
 
     public UserListResponse findUserList() {
         return UserListResponse.builder().users(userRepository.findAll()).build();
-    }
-
-    public UserListResponse findUserListWithTemplate() {
-        return UserListResponse.builder().users(mongoTemplate.find(new Query(), User.class, "User")).build();
     }
 
     public <T extends Number> UserResponse getByCollectionKey(T userId) {
@@ -88,6 +80,26 @@ public class UserService {
         log.info("db from user data info : {}", dbUserData.toString());
         return new ApiCommonResponse();
     }
+
+    @Transactional
+    public <T extends Number> ApiCommonResponse requiresNewTest(T userId, boolean isRollback) {
+        userRepository.deleteByUserId(userId.longValue());
+        User user = User.builder().userId(userId.longValue()).name("정재공").phoneNumber("010492399").build();
+        userRepository.save(user);
+        userTransactionService.requiresNewJpa(userId);
+
+        if (isRollback) {
+            throw new ValidCustomException(500, "data rollback");
+        }
+
+        //when
+        User dbUserData = this.findUserByUserId(user.getUserId());
+        log.info("insert data info : {}", user.toString());
+        log.info("db from user data info : {}", dbUserData.toString());
+        return new ApiCommonResponse();
+    }
+
+
 
     public <T extends Number> User findUserByUserId(T id) {
         return userRepository.findByUserId(id.longValue())

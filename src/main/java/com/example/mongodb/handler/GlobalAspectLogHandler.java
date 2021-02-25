@@ -1,5 +1,6 @@
 package com.example.mongodb.handler;
 
+import com.example.mongodb.exception.ValidCustomException;
 import com.example.mongodb.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,8 +17,15 @@ import static java.util.stream.Collectors.joining;
 @Slf4j
 public class GlobalAspectLogHandler {
     @Around("within(com.example.mongodb.domain.*.*Controller)")
-    public Object logBefore(ProceedingJoinPoint point) throws Throwable {
-        Object resultVal = point.proceed();
+    public Object logBefore(ProceedingJoinPoint point) {
+
+        Object resultVal;
+        try {
+            resultVal = point.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            throw new ValidCustomException(throwable.getMessage());
+        }
 
         long start = System.currentTimeMillis();
         long processTime = System.currentTimeMillis() - start;

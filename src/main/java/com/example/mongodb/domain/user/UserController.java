@@ -26,11 +26,6 @@ public class UserController {
         return userService.findUserList();
     }
 
-    @GetMapping(value = "/users/template")
-    public UserListResponse getUserListWithTemplate() {
-        return userService.findUserListWithTemplate();
-    }
-
     @GetMapping(value = "/users/{userId}")
     public UserResponse getUser(@PathVariable Long userId) {
         return userService.getByCollectionKey(userId);
@@ -44,6 +39,11 @@ public class UserController {
     @GetMapping(value = "/rollback/{userId}")
     public ApiCommonResponse rollbackTest(@PathVariable Long userId, boolean isRollback) {
         return userService.rollbackTest(userId, isRollback);
+    }
+
+    @GetMapping(value = "/rollback/requires/new/{userId}")
+    public ApiCommonResponse requiresNewTest(@PathVariable Long userId, boolean isRollback) {
+        return userService.requiresNewTest(userId, isRollback);
     }
 
     @GetMapping(value = "/ttlIndex/{userId}")
