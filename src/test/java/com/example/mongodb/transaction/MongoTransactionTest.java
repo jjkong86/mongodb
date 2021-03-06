@@ -1,24 +1,13 @@
 package com.example.mongodb.transaction;
 
-import com.example.mongodb.ServiceTest;
-import com.example.mongodb.domain.user.UserService;
 import com.example.mongodb.domain.user.model.User;
 import com.example.mongodb.exception.ValidCustomException;
-import com.example.mongodb.handler.TransactionTemplateFactoryBean;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-public class MongoTransactionTest extends ServiceTest {
-    @Autowired
-    TransactionTemplateFactoryBean transactionTemplateFactoryBean;
-    @Autowired
-    UserService userService;
-    @Autowired
-    MongoTemplate mongoTemplate;
+public class MongoTransactionTest extends TransactionalTemplateService {
 
     @Test
     public void transactionTest() {
