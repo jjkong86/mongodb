@@ -1,4 +1,4 @@
-package com.example.mongodb.handler;
+package com.example.mongodb.handler.transactional;
 
 import com.example.mongodb.exception.ValidCustomException;
 import com.example.mongodb.utils.TemplateTransactional;
@@ -8,17 +8,14 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.SessionSynchronization;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.lang.reflect.Method;
@@ -54,7 +51,7 @@ public class TransactionalTemplateAspect {
         TransactionTemplate template = this.setTransactionalOption(templateTransactional);
 
         final Object[] result = {null};
-        new TransactionTemplateFactory(template).execute(() -> {
+        new TemporaryTransactionTemplateFactory(template).execute(() -> {
             try {
                 result[0] = point.proceed();
             } catch (Throwable throwable) {

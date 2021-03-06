@@ -1,4 +1,4 @@
-package com.example.mongodb.handler;
+package com.example.mongodb.handler.transactional;
 
 import com.example.mongodb.utils.CustomCallback;
 import com.example.mongodb.utils.TransactionCallbackWithoutResultWrapper;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Component
-public class TransactionTemplateFactoryBean {
+public class TransactionTemplateFactoryBean implements TransactionTemplateFactory {
     private final TransactionTemplate transactionTemplate;
 
     public TransactionTemplateFactoryBean(MongoTransactionManager mongoTransactionManager, MongoTemplate mongoTemplate) {
@@ -18,6 +18,7 @@ public class TransactionTemplateFactoryBean {
         transactionTemplate.setTimeout(3);
     }
 
+    @Override
     public void execute(CustomCallback callback) {
         transactionTemplate.execute(TransactionCallbackWithoutResultWrapper.doInTransactionWithoutResult(callback));
     }

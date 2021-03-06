@@ -5,7 +5,7 @@ import com.example.mongodb.domain.user.UserTransactionService;
 import com.example.mongodb.domain.user.model.User;
 import com.example.mongodb.domain.user.response.UserResponse;
 import com.example.mongodb.exception.ValidCustomException;
-import com.example.mongodb.handler.TransactionTemplateFactoryBean;
+import com.example.mongodb.handler.transactional.TransactionTemplateFactoryBean;
 import com.example.mongodb.utils.TemplateTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
