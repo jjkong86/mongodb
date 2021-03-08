@@ -1,6 +1,6 @@
 package com.example.mongodb.handler;
 
-import com.example.mongodb.utils.TemplateTransactional;
+import com.example.mongodb.handler.transactional.TemplateTransactional;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 

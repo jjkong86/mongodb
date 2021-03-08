@@ -1,7 +1,5 @@
 package com.example.mongodb.handler.transactional;
 
-import com.example.mongodb.utils.CustomCallback;
-import com.example.mongodb.utils.TransactionCallbackWithoutResultWrapper;
 import org.springframework.transaction.support.TransactionTemplate;
 
 public class TemporaryTransactionTemplateFactory implements TransactionTemplateFactory {

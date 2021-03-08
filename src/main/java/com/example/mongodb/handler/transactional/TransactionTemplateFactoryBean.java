@@ -1,7 +1,5 @@
 package com.example.mongodb.handler.transactional;
 
-import com.example.mongodb.utils.CustomCallback;
-import com.example.mongodb.utils.TransactionCallbackWithoutResultWrapper;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.SessionSynchronization;
 import org.springframework.data.mongodb.core.MongoTemplate;

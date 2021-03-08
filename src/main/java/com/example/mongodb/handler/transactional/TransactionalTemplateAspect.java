@@ -1,7 +1,6 @@
 package com.example.mongodb.handler.transactional;
 
 import com.example.mongodb.exception.ValidCustomException;
-import com.example.mongodb.utils.TemplateTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -36,7 +35,7 @@ public class TransactionalTemplateAspect {
         this.mongoTransactionManager = mongoTransactionManager;
     }
 
-    @Pointcut("@annotation(com.example.mongodb.utils.TemplateTransactional)")
+    @Pointcut("@annotation(com.example.mongodb.handler.transactional.TemplateTransactional)")
     public void getTemplateTransactional() {
     }
 

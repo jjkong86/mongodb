@@ -5,7 +5,7 @@ import com.example.mongodb.domain.user.model.UserLog;
 import com.example.mongodb.domain.user.repository.UserRepository;
 import com.example.mongodb.exception.ValidCustomException;
 import com.example.mongodb.utils.DateUtil;
-import com.example.mongodb.utils.TemplateTransactional;
+import com.example.mongodb.handler.transactional.TemplateTransactional;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

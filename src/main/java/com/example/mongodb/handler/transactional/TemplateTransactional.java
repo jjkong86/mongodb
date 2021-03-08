@@ -1,4 +1,4 @@
-package com.example.mongodb.utils;
+package com.example.mongodb.handler.transactional;
 
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Isolation;
