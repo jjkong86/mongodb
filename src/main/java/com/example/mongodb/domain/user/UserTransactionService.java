@@ -49,8 +49,8 @@ public class UserTransactionService {
         this.dataSaveTemplate(log);
     }
 
-    public <T extends Number> User findUserByUserId(T id) {
-        return userRepository.findByUserId(id.longValue())
+    public <T extends Number> void findUserByUserId(T id) {
+        userRepository.findByUserId(id.longValue())
                 .orElseThrow(() -> new ValidCustomException(500, "not found user data by userId."));
     }
 

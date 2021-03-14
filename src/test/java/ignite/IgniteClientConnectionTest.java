@@ -1,37 +1,44 @@
 package ignite;
 
 
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.client.ClientCache;
 import org.apache.ignite.client.IgniteClient;
 import org.apache.ignite.configuration.ClientConfiguration;
+import org.apache.ignite.configuration.IgniteConfiguration;
+import org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi;
 import org.junit.Test;
 
 public class IgniteClientConnectionTest {
 
     @Test
     public void igniteClientTest() {
-        ClientConfiguration cfg = new ClientConfiguration().setAddresses("127.0.0.1:48100");
+        ClientConfiguration cfg = new ClientConfiguration().setAddresses("127.0.0.1:10800");
         try (IgniteClient igniteClient = Ignition.startClient(cfg)) {
-            System.out.println();
-            System.out.println(">>> Thin client put-get example started.");
+            for (int i = 0; i < 100; i++) {
+                System.out.println();
+                System.out.println(">>> Thin client put-get example started.");
 
-            final String CACHE_NAME = "put-get-example";
+                final String CACHE_NAME = "put-get-example";
 
-            ClientCache<Integer, String> cache = igniteClient.getOrCreateCache(CACHE_NAME);
+                ClientCache<Integer, String> cache = igniteClient.getOrCreateCache(CACHE_NAME);
 
-            System.out.format(">>> Created cache [%s].\n", CACHE_NAME);
+                System.out.format(">>> Created cache [%s].\n", CACHE_NAME);
 
-            Integer key = 1;
-            String val = "1545 Jackson Street";
+                Integer key = i;
+                String val = "1545 Jackson Street";
 
-            cache.put(key, val);
+                cache.put(key, val);
 
-            System.out.format(">>> Saved [%s] in the cache.\n", val);
+                System.out.format(">>> Saved [%s] in the cache.\n", val);
 
-            String cachedVal = cache.get(key);
+                String cachedVal = cache.get(key);
 
-            System.out.format(">>> Loaded [%s] from the cache.\n", cachedVal);
+                System.out.format(">>> Loaded [%s] from the cache.\n", cachedVal);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

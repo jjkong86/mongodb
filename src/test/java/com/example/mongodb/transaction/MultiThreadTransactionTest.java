@@ -71,25 +71,25 @@ public class MultiThreadTransactionTest extends TransactionalTemplateService {
     }
 
     public void addUsers(boolean rollback, TransactionTemplateFactory transactionTemplateFactory) {
-        for (int i = 0; i < 100; i++) {
-            // given
-            User user = new User((long) i, i + "test", "010-" + i);
-
-            // when
-            try {
-                transactionTemplateFactory.execute(() -> {
-                    userService.saveUserHandling(user);
-                    userService.saveUserLogWithTtlIndex(user);
-
-                    //rollback
-                    if (rollback)
-                        throw new ValidCustomException(500, "data rollback");
-                });
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        for (int i = 0; i < 100; i++) {
+//            // given
+//            User user = new User((long) i, i + "test", "010-" + i);
+//
+//            // when
+//            try {
+//                transactionTemplateFactory.execute(() -> {
+//                    userService.saveUserHandling(user);
+//                    userService.saveUserLogWithTtlIndex(user);
+//
+//                    //rollback
+//                    if (rollback)
+//                        throw new ValidCustomException(500, "data rollback");
+//                });
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void updateUsers(boolean rollback, TransactionTemplateFactory transactionTemplateFactory, String name) {
