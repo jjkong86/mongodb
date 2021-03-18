@@ -44,7 +44,7 @@ dependencies {
     implementation group: 'org.apache.ignite', name: 'ignite-spring', version: '2.9.1'
     implementation group: 'org.apache.ignite', name: 'ignite-core', version: '2.9.1'
 
-    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.196'
+    implementation group: 'com.h2database', name: 'h2', version: '1.4.195'
 
 
 }
