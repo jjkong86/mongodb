@@ -13,6 +13,7 @@ import com.example.mongodb.model.CommonModel;
 import com.example.mongodb.response.ApiCommonResponse;
 import com.example.mongodb.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,12 @@ public class UserService {
         User user = this.findUserByUserId(model.getCollectionKeyValue().longValue());
         return UserResponse.builder().user(user).code(Constant.CODE_SUCCESS.getCode()).build();
     }
+
+    @Cacheable(cacheNames="user",key="#userId")
+    public <T extends Number> User getUserByUserId(T userId) {
+        return this.findUserByUserId(userId);
+    }
+
 
     public UserResponse updateUserByCollectionKey(User user) {
         // optional
