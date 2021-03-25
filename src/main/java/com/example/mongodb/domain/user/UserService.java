@@ -25,10 +25,13 @@ public class UserService {
     private final UserLogRepository userLogRepository;
     private final UserTransactionService userTransactionService;
 
-    public UserService(UserRepository userRepository, UserLogRepository userLogRepository, UserTransactionService userTransactionService) {
+    private final UserCacheService userCacheService;
+
+    public UserService(UserRepository userRepository, UserLogRepository userLogRepository, UserTransactionService userTransactionService, UserCacheService userCacheService) {
         this.userRepository = userRepository;
         this.userLogRepository = userLogRepository;
         this.userTransactionService = userTransactionService;
+        this.userCacheService = userCacheService;
     }
 
     public UserResponse saveUser(User user) {
@@ -57,11 +60,9 @@ public class UserService {
         return UserResponse.builder().user(user).code(Constant.CODE_SUCCESS.getCode()).build();
     }
 
-    @Cacheable(cacheNames="user",key="#userId")
     public <T extends Number> User getUserByUserId(T userId) {
-        return this.findUserByUserId(userId);
+        return userCacheService.getUserByUserId(userId);
     }
-
 
     public UserResponse updateUserByCollectionKey(User user) {
         // optional

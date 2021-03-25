@@ -17,11 +17,11 @@ public class IgniteClientConnectionTest {
     public void igniteClientTest() {
         ClientConfiguration cfg = new ClientConfiguration().setAddresses("127.0.0.1:10800");
         try (IgniteClient igniteClient = Ignition.startClient(cfg)) {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 1; i++) {
                 System.out.println();
                 System.out.println(">>> Thin client put-get example started.");
 
-                final String CACHE_NAME = "put-get-example";
+                final String CACHE_NAME = "put-get-example" + i;
 
                 ClientCache<Integer, String> cache = igniteClient.getOrCreateCache(CACHE_NAME);
 
