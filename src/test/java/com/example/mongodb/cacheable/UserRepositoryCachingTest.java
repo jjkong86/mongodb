@@ -3,6 +3,7 @@ package com.example.mongodb.cacheable;
 import com.example.mongodb.ServiceTest;
 import com.example.mongodb.domain.user.model.User;
 import com.example.mongodb.domain.user.repository.UserCacheRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import static java.util.Optional.ofNullable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserRepositoryCachingTest extends ServiceTest {
-    private Logger logger = org.slf4j.LoggerFactory.getLogger(UserRepositoryCachingTest.class);
+    private final Logger logger = org.slf4j.LoggerFactory.getLogger(UserRepositoryCachingTest.class);
 
     @Autowired
     CacheManager cacheManager;
@@ -30,6 +31,12 @@ public class UserRepositoryCachingTest extends ServiceTest {
         userCacheRepository.deleteByUserId(99998L);
         userCacheRepository.save(new User(99999L, "Test", "000-0000-000"));
         userCacheRepository.save(new User(99998L, "Test", "000-0000-000"));
+    }
+
+    @After
+    public void after() {
+        userCacheRepository.deleteByUserId(99999L);
+        userCacheRepository.deleteByUserId(99998L);
     }
 
     private Optional<User> getCachedUser(long userId) {
