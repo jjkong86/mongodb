@@ -1,7 +1,5 @@
 package com.example.mongodb.configs;
 
-import org.apache.ignite.Ignite;
-import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.spring.SpringCacheManager;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.springframework.cache.CacheManager;
