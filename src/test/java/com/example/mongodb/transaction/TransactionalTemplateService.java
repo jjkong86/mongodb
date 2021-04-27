@@ -2,6 +2,7 @@ package com.example.mongodb.transaction;
 
 import com.example.mongodb.ServiceTest;
 import com.example.mongodb.domain.user.UserService;
+import com.example.mongodb.domain.user.UserTransactionService;
 import com.example.mongodb.handler.transactional.TransactionTemplateFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,4 +14,7 @@ public class TransactionalTemplateService extends ServiceTest {
     UserService userService;
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    UserTransactionService userTransactionService;
 }

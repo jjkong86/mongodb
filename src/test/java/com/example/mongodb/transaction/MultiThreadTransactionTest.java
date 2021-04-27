@@ -51,14 +51,14 @@ public class MultiThreadTransactionTest extends TransactionalTemplateService {
             long time = System.currentTimeMillis();
 
             this.updateUsers(false, transactionTemplateFactoryBean, "bean");
-            this.timeSleep(5);
+            this.timeSleep(2);
 
             System.out.println("first time : " + (System.currentTimeMillis() - time));
         });
 
         executorFactory.supportExecute(() -> {
             long time = System.currentTimeMillis();
-            this.timeSleep(2);
+            this.timeSleep(5);
 
             TransactionTemplate transactionTemplate = new TransactionTemplate(mongoTransactionManager);
             transactionTemplate.setPropagationBehavior(Propagation.REQUIRES_NEW.value());
@@ -100,7 +100,7 @@ public class MultiThreadTransactionTest extends TransactionalTemplateService {
             // when
             try {
                 transactionTemplateFactory.execute(() -> {
-                    userService.updateUserByCollectionKey(user);
+                    userTransactionService.dataSaveTemplate(user);
 
                     //rollback
                     if (rollback)
