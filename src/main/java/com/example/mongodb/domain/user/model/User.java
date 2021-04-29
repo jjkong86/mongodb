@@ -40,4 +40,9 @@ public class User extends CommonModel<Long> {
     public User(long userId) {
         this.userId = userId;
     }
+
+    public User(long i,String name) {
+        this.userId = i;
+        this.name = name;
+    }
 }
